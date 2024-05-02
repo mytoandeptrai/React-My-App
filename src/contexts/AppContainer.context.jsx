@@ -1,3 +1,4 @@
+import axios from "axios";
 import queryString from "query-string";
 import React, { useEffect, useState } from "react";
 
@@ -29,8 +30,9 @@ export const AppContainerProvider = ({ children }) => {
                filters
             )}`;
 
-            const response = await fetch(url);
-            const data = await response.json();
+            const response = await axios.get(url);
+            const data = response.data;
+
             setPagination({
                limit: data.limit,
                offset: data.offset,

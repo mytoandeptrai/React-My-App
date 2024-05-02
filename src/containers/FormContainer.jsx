@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Row } from "reactstrap";
 import FormField from "../components/FormField";
 import { useAppContext } from "../contexts/AppContainer.context";
+import axios from "axios";
+import { axiosClient } from "../axiosClient";
+import FileBase64 from "react-file-base64";
 
 const FormContainer = () => {
    const appContext = useAppContext();
@@ -85,6 +88,57 @@ const FormContainer = () => {
       onUpdateData(object);
    };
 
+   const [fileImage, setFileImage] = useState("");
+
+   const onPostClick = async () => {
+      try {
+         const data = {
+            id: Math.random(),
+            name: "product2",
+            size: "XL",
+            image: fileImage,
+         };
+
+         const response = await axios.post(
+            "http://localhost:5000/products",
+            data
+         );
+      } catch (error) {}
+   };
+
+   const onGetClick = async () => {
+      try {
+         const response = await axiosClient.get("/products");
+         console.log("🚀 ~ response2", response);
+      } catch (error) {
+         console.log("🚀 ~ onGetClick ~ error:", error);
+      }
+   };
+   const onPutClick = async (id) => {
+      try {
+         const data = {
+            id: id,
+            email: `thinh1234.${Math.random()}@gmail.com`,
+            name: `thinh${Math.random()}`,
+         };
+
+         const response = await axios.put(
+            `http://localhost:5000/users/${id}`,
+            data
+         );
+      } catch (error) {
+         console.log("🚀 ~ onPutClick ~ error:", error);
+      }
+   };
+   const onPatchClick = async () => {};
+   const onDeleteClick = async (id) => {
+      try {
+         const response = await axiosClient.delete(`/users/${id}`);
+      } catch (error) {
+         console.log("🚀 ~ onDeleteClick ~ error:", error);
+      }
+   };
+
    return (
       <Form onSubmit={editInfoData ? onUpdate : onSubmit}>
          <Row>
@@ -126,7 +180,52 @@ const FormContainer = () => {
             onChange={onFormChange}
          />
 
-         <Button type="submit">{editInfoData ? "Update" : "Add new"}</Button>
+         {/* <Button type="submit">{editInfoData ? "Update" : "Add new"}</Button> */}
+         <Button
+            type="button"
+            style={{ marginLeft: "10px" }}
+            onClick={onGetClick}
+         >
+            Test GET Axios
+         </Button>
+         <Button
+            type="button"
+            style={{ marginLeft: "10px" }}
+            onClick={onPostClick}
+         >
+            Test POST Axios
+         </Button>
+         <Button
+            type="button"
+            style={{ marginLeft: "10px" }}
+            onClick={() => onPutClick("0.2163967940025393")}
+         >
+            Test PUT Axios
+         </Button>
+         <Button
+            type="button"
+            style={{ marginLeft: "10px" }}
+            onClick={onPatchClick}
+         >
+            Test PATCH Axios
+         </Button>
+         <Button
+            type="button"
+            style={{ marginLeft: "10px" }}
+            onClick={() => onDeleteClick("0.7467165807198004")}
+         >
+            Test DELETE Axios
+         </Button>
+
+         <FileBase64
+            accept="image/*"
+            multiple={false}
+            type="file"
+            value={fileImage}
+            onDone={({ base64 }) => {
+               setFileImage(base64);
+            }}
+         />
       </Form>
    );
 };
