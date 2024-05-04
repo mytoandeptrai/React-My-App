@@ -1,9 +1,30 @@
 import React from "react";
-import { useAppContext } from "../contexts/AppContainer.context";
+import { useDispatch, useSelector } from "react-redux";
+import { SET_FILTER } from "../stores/actions/tableActions";
 
 const Pagination = () => {
-   const appContext = useAppContext();
-   const { pagination, onPageChange, onLimitChange } = appContext;
+   const dispatch = useDispatch();
+   const { pagination, filters } = useSelector((state) => state.tableState);
+
+   const onPageChange = (newPage) => {
+      dispatch({
+         type: SET_FILTER,
+         payload: {
+            ...filters,
+            offset: newPage,
+         },
+      });
+   };
+
+   const onLimitChange = (newLimit) => {
+      dispatch({
+         type: SET_FILTER,
+         payload: {
+            offset: 1,
+            limit: newLimit,
+         },
+      });
+   };
 
    const { total_users, offset, limit } = pagination;
    const lastPage = Math.ceil(total_users / limit);

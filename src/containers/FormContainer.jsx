@@ -5,10 +5,10 @@ import { useAppContext } from "../contexts/AppContainer.context";
 import axios from "axios";
 import { axiosClient } from "../axiosClient";
 import FileBase64 from "react-file-base64";
+import { useSelector } from "react-redux";
 
 const FormContainer = () => {
-   const appContext = useAppContext();
-   const { onSubmitData, onUpdateData, editInfoData } = appContext;
+   const editInfoData = useSelector((state) => state.tableState.editInfoData);
 
    const [formValues, setFormValues] = useState({
       emailValue: "",
@@ -66,7 +66,7 @@ const FormContainer = () => {
          phoneNumber: formValues.phoneNumber,
       };
 
-      onSubmitData(object);
+      // onSubmitData(object);
    };
 
    const onUpdate = (e) => {
@@ -85,59 +85,10 @@ const FormContainer = () => {
          phoneNumber: formValues.phoneNumber,
       };
 
-      onUpdateData(object);
+      // onUpdateData(object);
    };
 
    const [fileImage, setFileImage] = useState("");
-
-   const onPostClick = async () => {
-      try {
-         const data = {
-            id: Math.random(),
-            name: "product2",
-            size: "XL",
-            image: fileImage,
-         };
-
-         const response = await axios.post(
-            "http://localhost:5000/products",
-            data
-         );
-      } catch (error) {}
-   };
-
-   const onGetClick = async () => {
-      try {
-         const response = await axiosClient.get("/products");
-         console.log("🚀 ~ response2", response);
-      } catch (error) {
-         console.log("🚀 ~ onGetClick ~ error:", error);
-      }
-   };
-   const onPutClick = async (id) => {
-      try {
-         const data = {
-            id: id,
-            email: `thinh1234.${Math.random()}@gmail.com`,
-            name: `thinh${Math.random()}`,
-         };
-
-         const response = await axios.put(
-            `http://localhost:5000/users/${id}`,
-            data
-         );
-      } catch (error) {
-         console.log("🚀 ~ onPutClick ~ error:", error);
-      }
-   };
-   const onPatchClick = async () => {};
-   const onDeleteClick = async (id) => {
-      try {
-         const response = await axiosClient.delete(`/users/${id}`);
-      } catch (error) {
-         console.log("🚀 ~ onDeleteClick ~ error:", error);
-      }
-   };
 
    return (
       <Form onSubmit={editInfoData ? onUpdate : onSubmit}>
@@ -180,52 +131,7 @@ const FormContainer = () => {
             onChange={onFormChange}
          />
 
-         {/* <Button type="submit">{editInfoData ? "Update" : "Add new"}</Button> */}
-         <Button
-            type="button"
-            style={{ marginLeft: "10px" }}
-            onClick={onGetClick}
-         >
-            Test GET Axios
-         </Button>
-         <Button
-            type="button"
-            style={{ marginLeft: "10px" }}
-            onClick={onPostClick}
-         >
-            Test POST Axios
-         </Button>
-         <Button
-            type="button"
-            style={{ marginLeft: "10px" }}
-            onClick={() => onPutClick("0.2163967940025393")}
-         >
-            Test PUT Axios
-         </Button>
-         <Button
-            type="button"
-            style={{ marginLeft: "10px" }}
-            onClick={onPatchClick}
-         >
-            Test PATCH Axios
-         </Button>
-         <Button
-            type="button"
-            style={{ marginLeft: "10px" }}
-            onClick={() => onDeleteClick("0.7467165807198004")}
-         >
-            Test DELETE Axios
-         </Button>
-
-         <FileBase64
-            accept="image/*"
-            multiple={false}
-            type="file"
-            value={fileImage}
-            onDone={({ base64 }) => {
-               setFileImage(base64);
-            }}
-         />
+         <Button type="submit">{editInfoData ? "Update" : "Add new"}</Button>
       </Form>
    );
 };

@@ -1,12 +1,11 @@
 import React from "react";
-import TableContainer from "./TableContainer";
-import Pagination from "../components/Pagination";
-import { useAppContext } from "../contexts/AppContainer.context";
+import { useSelector } from "react-redux";
 import { Spinner } from "reactstrap";
+import Pagination from "../components/Pagination";
+import TableContainer from "./TableContainer";
 
 const TableListContainer = () => {
-   const appContext = useAppContext();
-   const { isLoading } = appContext;
+   const isLoading = useSelector((state) => state.tableState.isLoading);
 
    if (isLoading) {
       return <Spinner>Loading...</Spinner>;

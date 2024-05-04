@@ -1,22 +1,27 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "./App.css";
+import { getTableApi } from "./api/tableApi";
 import FormContainer from "./containers/FormContainer";
 import TableListContainer from "./containers/TableListContainer";
-import { AppContainerProvider } from "./contexts/AppContainer.context";
-import FormFormikContainer from "./containers/FormFormikContainer";
 
 const App = () => {
+   const dispatch = useDispatch();
+   const filters = useSelector((state) => state.tableState.filters);
+
+   useEffect(() => {
+      dispatch(getTableApi(filters));
+   }, [dispatch, filters]);
+
    return (
-      <AppContainerProvider>
+      <>
          <div>
             <FormContainer />
-            {/* <TableListContainer /> */}
-            {/* <FormFormikContainer /> */}
+            <TableListContainer />
          </div>
-      </AppContainerProvider>
+      </>
    );
 };
 
 export default App;
-

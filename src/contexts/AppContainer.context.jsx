@@ -1,12 +1,15 @@
 import axios from "axios";
 import queryString from "query-string";
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { getTableApi } from "../api/tableApi";
 
 export const useAppContext = () => {
    return React.useContext(AppContainerContext);
 };
 
 export const AppContainerProvider = ({ children }) => {
+   const dispatch = useDispatch();
    const [dataList, setDataList] = useState([]);
    const [isLoading, setIsLoading] = useState(false);
    const [editInfoData, setEditInfoData] = useState(null);
@@ -22,32 +25,8 @@ export const AppContainerProvider = ({ children }) => {
    });
 
    useEffect(() => {
-      setIsLoading(true);
-
-      const getApi = async () => {
-         try {
-            const url = `https://api.slingacademy.com/v1/sample-data/users?${queryString.stringify(
-               filters
-            )}`;
-
-            const response = await axios.get(url);
-            const data = response.data;
-
-            setPagination({
-               limit: data.limit,
-               offset: data.offset,
-               total_users: data.total_users,
-            });
-            setDataList(data.users);
-            setIsLoading(false);
-         } catch (error) {
-            setDataList([]);
-            setIsLoading(false);
-         }
-      };
-
-      getApi();
-   }, [filters]);
+      dispatch(getTableApi(filters));
+   }, [dispatch, filters]);
 
    const onSubmitData = (data) => {
       setDataList([...dataList, data]);

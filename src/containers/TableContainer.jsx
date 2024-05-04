@@ -1,10 +1,18 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Table } from "reactstrap";
-import { useAppContext } from "../contexts/AppContainer.context";
+import { SET_EDIT_INFO } from "../stores/actions/tableActions";
 
 const TableContainer = () => {
-   const appContext = useAppContext();
-   const { dataList, onEditChange } = appContext;
+   const dispatch = useDispatch();
+   const dataList = useSelector((state) => state.tableState.dataList);
+
+   const onEditChange = (editInfo) => {
+      dispatch({
+         type: SET_EDIT_INFO,
+         payload: editInfo,
+      });
+   };
 
    return (
       <Table hover>
