@@ -2,16 +2,14 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Table } from "reactstrap";
 import { SET_EDIT_INFO } from "../stores/actions/tableActions";
+import { setEditInfo } from "../redux-toolkit/slice/tableSlice";
 
 const TableContainer = () => {
    const dispatch = useDispatch();
    const dataList = useSelector((state) => state.tableState.dataList);
 
    const onEditChange = (editInfo) => {
-      dispatch({
-         type: SET_EDIT_INFO,
-         payload: editInfo,
-      });
+      dispatch(setEditInfo(editInfo));
    };
 
    return (

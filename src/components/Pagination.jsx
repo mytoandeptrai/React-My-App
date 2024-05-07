@@ -1,29 +1,26 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { SET_FILTER } from "../stores/actions/tableActions";
+import { setFilter } from "../redux-toolkit/slice/tableSlice";
 
 const Pagination = () => {
    const dispatch = useDispatch();
    const { pagination, filters } = useSelector((state) => state.tableState);
 
    const onPageChange = (newPage) => {
-      dispatch({
-         type: SET_FILTER,
-         payload: {
-            ...filters,
-            offset: newPage,
-         },
-      });
+      const payload = {
+         ...filters,
+         offset: newPage,
+      };
+      dispatch(setFilter(payload));
    };
 
    const onLimitChange = (newLimit) => {
-      dispatch({
-         type: SET_FILTER,
-         payload: {
-            offset: 1,
-            limit: newLimit,
-         },
-      });
+      const payload = {
+         offset: 1,
+         limit: newLimit,
+      };
+
+      dispatch(setFilter(payload));
    };
 
    const { total_users, offset, limit } = pagination;
