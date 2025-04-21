@@ -17,7 +17,7 @@ const App = () => {
 
    const onClickIP = async () => {
       try {
-         await axios.get('https://nestjs-rate-limit.onrender.com/api/ip')
+         await axios.get('https://nestjs-rate-limit.onrender.com/users/ip')
       } catch (error) {
          console.log('error', error)
       }
@@ -25,7 +25,7 @@ const App = () => {
 
    const onClickIP2 = async () => {
       try {
-         await axios.post('https://nestjs-rate-limit.onrender.com/api/ip2', {})
+         await axios.post('https://nestjs-rate-limit.onrender.com/users/ip2', {})
       } catch (error) {
          console.log('error ip2', error)
       }
